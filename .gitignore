@@ -1,0 +1,11 @@
+#Music files
+*.mp4
+*.mp3
+*.wav
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+
