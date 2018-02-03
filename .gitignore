@@ -8,4 +8,5 @@
 .AppleDouble
 .LSOverride
 
-
+# ignored directory
+.idea/*
