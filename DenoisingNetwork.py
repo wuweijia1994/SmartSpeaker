@@ -6,6 +6,9 @@ class DenoiseNN(nn.Module):
         super(DenoiseNN, self).__init__()
 
         #Input layer
+        self.conv1 = nn.Conv2d(1, 1, 3, padding=1)
+        self.relu_0 = nn.ReLU()
+
         self.linear_1 = nn.Linear(161*11, 1600)
         self.relu_1 = nn.ReLU()
 
@@ -24,7 +27,8 @@ class DenoiseNN(nn.Module):
 
 
     def forward(self, x):
-        result = x
+        result = x.view(-1, 161 * 11)
+        # result = self.relu_0(self.conv1(result))
         result = self.relu_1(self.linear_1(result))
 
         result = self.relu_2(self.linear_2(result))
