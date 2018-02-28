@@ -5,8 +5,8 @@ import numpy as np
 import array
 import os
 
-shower_audio_path = "/Users/weijiawu/Documents/GitHub/SmartSpeaker/audio"
-normal_audio_path = "/Users/weijiawu/Documents/GitHub/SmartSpeaker/ProcessDataset/small_wav"
+shower_audio_path = "../audio"
+normal_audio_path = "./clean_trainset_wav"
 
 def get_subfolders(dir):
     if os.path.exists(dir):
@@ -43,7 +43,7 @@ def mix_single_audio(normal_audio, noise_audio):
 
 
 def save_audio(common_path, noise_name, file_name, audio):
-    origin_audio = pydub.AudioSegment.from_file(os.path.join(common_path, file_name), format="wav")
+    # origin_audio = pydub.AudioSegment.from_file(os.path.join(common_path, file_name), format="wav")
     # audio_array = array.array(origin_audio.array_type, audio.astype(int))
     # new_audio = origin_audio._spawn(audio_array)
 
@@ -66,22 +66,22 @@ def mix_all_audio(noise_audio_path, normal_audio_path):
     shower_mp3_files = get_subfolders(noise_audio_path)
     for shower_file in shower_mp3_files:
         for normal_file in normal_wav_files:
-            normal_audio = pydub.AudioSegment.from_file(os.path.join("wav", normal_file), format="wav")
+            normal_audio = pydub.AudioSegment.from_file(os.path.join("clean_trainset_wav", normal_file), format="wav")
             normal_audio = normal_audio.set_frame_rate(48000)
             normal_audio = normal_audio.overlay(normal_audio)
-            build_directory("./clean_trainset_wav/")
-            output_file_path = os.path.join("./clean_trainset_wav/", normal_file)
-            normal_audio.export(output_file_path, format='wav')
+            # build_directory("./clean_trainset_wav/")
+            # output_file_path = os.path.join("./clean_trainset_wav/", normal_file)
+            # normal_audio.export(output_file_path, format='wav')
 
             # audio.export(file_path, format="wav")
             noise_audio = pydub.AudioSegment.from_file(os.path.join(os.pardir, "audio", shower_file), format="mp3")
             noise_audio = noise_audio.set_frame_rate(48000)
-            noise_audio = noise_audio - 5
+            noise_audio = noise_audio - 15
 
             mix_audio = mix_single_audio(normal_audio, noise_audio)
-            save_audio("./wav/", shower_file, normal_file, mix_audio)
+            save_audio("./clean_trainset_wav/", shower_file, normal_file, mix_audio)
 
-            if(len(normal_audio)==len(mix_audio)):
+            if(normal_audio.duration_seconds==mix_audio.duration_seconds):
                 print("perfect!")
 
 if __name__ == '__main__':

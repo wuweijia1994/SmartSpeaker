@@ -6,6 +6,11 @@ import numpy as np
 import os
 import AudioSynthesis
 
+import pysptk
+import seaborn
+import matplotlib
+
+
 # Librosa for audio
 import librosa
 # And the display module for visualization
@@ -22,6 +27,7 @@ class AudioSpectrogram:
         self.audio = np.fromstring(audio_file._data, np.int16)
 
         self.frame_rate = audio_file.frame_rate
+        self.sr = self.frame_rate
         #numbers for each seg
         self.seg_len = int(20 * self.frame_rate / 1000)
 
@@ -40,6 +46,29 @@ class AudioSpectrogram:
 
         # Convert to log scale (dB). We'll use the peak power (max) as reference.
         self.log_S = librosa.power_to_db(S, ref=np.max)
+
+    def pysptk_mfcc(self):
+        frame_length = 1024
+        hop_length = 80
+
+        # Note that almost all of pysptk functions assume input array is C-contiguous and np.float4 element type
+        frames = librosa.util.frame(x, frame_length=frame_length, hop_length=hop_length).astype(np.float64).T
+
+        # Windowing
+        frames *= pysptk.blackman(frame_length)
+
+        assert frames.shape[1] == frame_length
+
+
+        # Order of mel-cepstrum
+        order = 25
+        alpha = 0.41
+
+        mc = pysptk.mcep(frames, order, alpha)
+        logH = pysptk.mgc2sp(mc, alpha, 0.0, frame_length).real
+        librosa.display.specshow(logH.T, sr=self.sr, hop_length=hop_length, x_axis="time", y_axis="linear")
+        colorbar()
+        title("Spectral envelope estimate from mel-cepstrum")
 
     def librosa_plot_mfcc(self):
         # matplotlib for displaying the output

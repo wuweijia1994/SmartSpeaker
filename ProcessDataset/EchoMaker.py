@@ -24,7 +24,7 @@ class EchoMaker():
         self.audio.export(file_name, format)
 
     def default_rebounce_save(self, file_name = "echo.wav", format = "wav"):
-        self.set_period(300)
+        self.set_period(100)
         self.set_echo_times(2)
         self.rebounce()
         self.save(file_name, format)
