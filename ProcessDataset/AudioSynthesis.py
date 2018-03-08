@@ -43,10 +43,6 @@ def mix_single_audio(normal_audio, noise_audio):
 
 
 def save_audio(common_path, noise_name, file_name, audio):
-    # origin_audio = pydub.AudioSegment.from_file(os.path.join(common_path, file_name), format="wav")
-    # audio_array = array.array(origin_audio.array_type, audio.astype(int))
-    # new_audio = origin_audio._spawn(audio_array)
-
     noise_path = os.path.join("./mix/", os.path.splitext(noise_name)[0])
     build_directory(noise_path)
     output_file_path = os.path.join(noise_path, file_name)

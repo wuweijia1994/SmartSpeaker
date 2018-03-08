@@ -5,6 +5,7 @@
 import speech_text as si
 import play_audio as pa
 import random
+import os
 from playsound import playsound
 
 import time

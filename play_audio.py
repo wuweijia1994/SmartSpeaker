@@ -1,7 +1,7 @@
 import pyaudio
 import wave
 import time
-from pygame import mixer # Load the required library
+ # Load the required library
 from gtts import gTTS
 import os
 
